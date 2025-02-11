@@ -1,30 +1,32 @@
 package model;
 
-import java.time.LocalDate;
-import java.util.Arrays;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-public class Usuario {
-
+public class Usuario implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String nome;
     private String tipo;
-    private Gasto[] gastos;
+    private transient List<Gasto> gastos; // Não será serializado
 
     public Usuario(String nome, String tipo) {
         this.nome = nome;
         this.tipo = tipo;
-        gastos = new Gasto[1];
+        this.gastos = new ArrayList<>();
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void adicionarGasto(Gasto gasto) {
+        gastos.add(gasto);
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public String getNome() {
+        return nome;
     }
 
-    public void setGastos(Gasto[] gastos) {
-        this.gastos = gastos;
+    public String getTipo() {
+        return tipo;
     }
 
     @Override
@@ -32,7 +34,19 @@ public class Usuario {
         return "Usuario{" +
                 "nome='" + nome + '\'' +
                 ", tipo='" + tipo + '\'' +
-                ", gastos=" + Arrays.toString(gastos) +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(nome, usuario.nome) && Objects.equals(tipo, usuario.tipo) && Objects.equals(gastos, usuario.gastos);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, tipo, gastos);
     }
 }
