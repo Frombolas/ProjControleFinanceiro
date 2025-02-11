@@ -21,8 +21,9 @@ public class GastoDao {
         }
     }
 
-    private void atualizarArquivo(Set<Gasto> gastos) throws IOException {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo))) {
+    private void atualizarArquivo(Set<Gasto> gastos) throws IOException, ClassNotFoundException{
+        try (ObjectOutputStream out = new ObjectOutputStream(
+                new FileOutputStream(arquivo))) {
             out.writeObject(gastos);
         }
     }
@@ -32,7 +33,8 @@ public class GastoDao {
             return new HashSet<>();
         }
 
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(arquivo))) {
+        try (ObjectInputStream in = new ObjectInputStream(
+                new FileInputStream(arquivo))) {
             return (Set<Gasto>) in.readObject();
         }
     }
@@ -58,10 +60,10 @@ public class GastoDao {
     public boolean atualizarGasto(Gasto gasto) throws IOException, ClassNotFoundException {
         Set<Gasto> gastos = getGastos();
         if (gastos.contains(gasto)) {
-            gastos.remove(gasto);
-            gastos.add(gasto);
-            atualizarArquivo(gastos);
-            return true;
+            if(gastos.remove(gasto) && gastos.add(gasto)) {
+                atualizarArquivo(gastos);
+                return true;
+            }
         }
         return false;
     }

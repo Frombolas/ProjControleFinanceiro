@@ -6,12 +6,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class Usuario implements Serializable {
+
+    private int id;
     private static final long serialVersionUID = 1L;
     private String nome;
     private String tipo;
     private transient List<Gasto> gastos; // Não será serializado
 
-    public Usuario(String nome, String tipo) {
+    public Usuario(int id,String nome, String tipo) {
+        this.id = id;
         this.nome = nome;
         this.tipo = tipo;
         this.gastos = new ArrayList<>();
@@ -32,7 +35,8 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "Usuario{" +
-                "nome='" + nome + '\'' +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
                 ", tipo='" + tipo + '\'' +
                 '}';
     }
@@ -42,11 +46,11 @@ public class Usuario implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
-        return Objects.equals(nome, usuario.nome) && Objects.equals(tipo, usuario.tipo) && Objects.equals(gastos, usuario.gastos);
+        return id == usuario.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nome, tipo, gastos);
+        return Objects.hashCode(id);
     }
 }
