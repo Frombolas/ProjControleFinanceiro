@@ -29,6 +29,7 @@ public class Gasto implements Serializable {
                 ", categoria='" + categoria + '\'' +
                 ", data=" + data +
                 ", usuario=" + usuario.getNome() + // Apenas o nome do usuário
+                ", saldo=" + usuario.getSaldo() +
                 '}';
     }
 

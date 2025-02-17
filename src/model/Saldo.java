@@ -1,10 +1,13 @@
 package model;
 
-public class Saldo {
-    private double saldo;
+import java.io.Serializable;
 
-    public Saldo() {
-        this.saldo = 0;
+public class Saldo implements Serializable {
+    private double saldo;
+    private static final long serialVersionUID = 1L;
+
+    public Saldo(double saldo) {
+        this.saldo = saldo;
     }
 
     public double getSaldo() {
@@ -16,17 +19,23 @@ public class Saldo {
     }
 
     public boolean adicionarValor(double valor) {
-        if(valor > 0){
+        if (valor > 0) {
             this.saldo += valor;
             return true;
         }
         return false;
     }
+
     public boolean removerValor(double valor) {
-        if(valor > 0){
+        if (valor > 0 && valor <= this.saldo) {
             this.saldo -= valor;
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Saldo: R$ %.2f", saldo); // Formata o saldo como moeda
     }
 }

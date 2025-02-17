@@ -2,6 +2,7 @@ package view;
 
 import dao.GastoDao;
 import model.Gasto;
+import model.Saldo;
 import model.Usuario;
 
 import java.io.IOException;
@@ -13,20 +14,21 @@ public class Main {
 
         GastoDao gastoDao = new GastoDao();
 
-        Usuario joao = new Usuario(1,"João", "Comum");
-        Usuario maria = new Usuario(2,"Maria", "Comum");
+        Usuario joao = new Usuario(1,"João", new Saldo(10));
+        Usuario maria = new Usuario(2,"Maria",  new Saldo(0));
 
         Gasto gasto1 = new Gasto(1,100.0f, "Alimentação", LocalDate.now(), joao);
         Gasto gasto2 = new Gasto(2,50.0f, "Transporte", LocalDate.now(), joao);
-        Gasto gasto3 = new Gasto(3,40.0f, "Transporte", LocalDate.of(2025,01,12), joao);
-        Gasto gasto4 = new Gasto(4, 120.0f,"Beleza", LocalDate.of(2025,01,28), maria);
+        Gasto gasto3 = new Gasto(3,40.0f, "Transporte", LocalDate.of(2025,1,12), joao);
+        Gasto gasto4 = new Gasto(4, 120.0f,"Beleza", LocalDate.of(2025,1,28), maria);
 
 
 
         try {
             gastoDao.adicionarGasto(gasto1);
             gastoDao.adicionarGasto(gasto2);
-            gastoDao.atualizarGasto(gasto4);
+            gastoDao.adicionarGasto(gasto3);
+            gastoDao.adicionarGasto(gasto4);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {

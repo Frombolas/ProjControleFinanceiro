@@ -6,18 +6,17 @@ import java.util.List;
 import java.util.Objects;
 
 public class Usuario implements Serializable {
-
     private int id;
     private static final long serialVersionUID = 1L;
     private String nome;
-    private String tipo;
     private transient List<Gasto> gastos;
+    private Saldo saldo;
 
-    public Usuario(int id,String nome, String tipo) {
+    public Usuario(int id, String nome, Saldo saldo) {
         this.id = id;
         this.nome = nome;
-        this.tipo = tipo;
         this.gastos = new ArrayList<>();
+        this.saldo = saldo;
     }
 
     public void adicionarGasto(Gasto gasto) {
@@ -28,8 +27,8 @@ public class Usuario implements Serializable {
         return nome;
     }
 
-    public String getTipo() {
-        return tipo;
+    public Saldo getSaldo() {
+        return saldo;
     }
 
     @Override
@@ -37,7 +36,7 @@ public class Usuario implements Serializable {
         return "Usuario{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
-                ", tipo='" + tipo + '\'' +
+                ", saldo=" + saldo +
                 '}';
     }
 
