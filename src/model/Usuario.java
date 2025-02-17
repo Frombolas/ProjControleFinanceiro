@@ -11,7 +11,7 @@ public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
     private String nome;
     private String tipo;
-    private transient List<Gasto> gastos; // Não será serializado
+    private transient List<Gasto> gastos;
 
     public Usuario(int id,String nome, String tipo) {
         this.id = id;
