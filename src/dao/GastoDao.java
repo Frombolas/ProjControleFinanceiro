@@ -1,6 +1,8 @@
 package dao;
 
 import model.Gasto;
+import model.Saldo;
+import model.Usuario;
 
 import java.io.*;
 import java.util.HashSet;
@@ -39,9 +41,17 @@ public class GastoDao {
         }
     }
 
+
+
     public boolean adicionarGasto(Gasto gasto) throws IOException, ClassNotFoundException {
         Set<Gasto> gastos = getGastos();
         if (gastos.add(gasto)) {
+            // atualizando o saldo do usuario
+            Usuario usuario = gasto.getUsuario();
+            Saldo saldo = usuario.getSaldo();
+            saldo.removerValor(gasto.getValor());
+
+            // atualizando o arquivo
             atualizarArquivo(gastos);
             return true;
         }
@@ -57,14 +67,41 @@ public class GastoDao {
         return false;
     }
 
-    public boolean atualizarGasto(Gasto gasto) throws IOException, ClassNotFoundException {
+    public boolean atualizarGasto(Gasto gastoAtualizado) throws IOException, ClassNotFoundException {
         Set<Gasto> gastos = getGastos();
-        if (gastos.contains(gasto)) {
-            if(gastos.remove(gasto) && gastos.add(gasto)) {
+
+        for (Gasto gasto : gastos) {
+            if (gasto.getId() == gastoAtualizado.getId()) {
+                // Verifica se o valor foi alterado
+                if (gastoAtualizado.getValor() != 0 && gastoAtualizado.getValor() != gasto.getValor()) {
+                    // Calcula a diferença entre o novo valor e o valor antigo
+                    float diferenca = gastoAtualizado.getValor() - gasto.getValor();
+
+                    // Atualiza o saldo do usuário
+                    Usuario usuario = gasto.getUsuario();
+                    Saldo saldo = usuario.getSaldo();
+                    saldo.removerValor(diferenca); // Subtrai a diferença do saldo
+                }
+
+                // Atualiza os campos não nulos ou não zero
+                if (gastoAtualizado.getValor() != 0) {
+                    gasto.setValor(gastoAtualizado.getValor());
+                }
+                if (gastoAtualizado.getCategoria() != null) {
+                    gasto.setCategoria(gastoAtualizado.getCategoria());
+                }
+                if (gastoAtualizado.getData() != null) {
+                    gasto.setData(gastoAtualizado.getData());
+                }
+                if (gastoAtualizado.getUsuario() != null) {
+                    gasto.setUsuario(gastoAtualizado.getUsuario());
+                }
+
+                // Salva as alterações no arquivo
                 atualizarArquivo(gastos);
                 return true;
             }
         }
-        return false;
+        return false; // Gasto não encontrado
     }
 }
