@@ -1,6 +1,7 @@
 package view;
 
 import dao.GastoDao;
+import dao.SaldoDao;
 import model.Gasto;
 import model.Saldo;
 import model.Usuario;
@@ -12,11 +13,14 @@ import java.util.Set;
 public class Main {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         GastoDao gastoDao = new GastoDao();
+        SaldoDao saldoDao = new SaldoDao();
 
         // Cria um usuário com saldo inicial
         Usuario gustavo = new Usuario(1, "Gustavo", new Saldo(500));
 
-        // Criando gastos
+        saldoDao.adicionarSaldo(gustavo.getId(), gustavo.getSaldo());
+
+        // Cria alguns gastos
         Gasto gasto1 = new Gasto(1, 110.0f, "Alimentação", LocalDate.now(), gustavo);
         Gasto gasto2 = new Gasto(2, 50.0f, "Transporte", LocalDate.now(), gustavo);
         Gasto gasto3 = new Gasto(3, 40.0f, "Transporte", LocalDate.of(2025, 1, 12), gustavo);
@@ -38,7 +42,7 @@ public class Main {
             }
 
             // Exibe o saldo atualizado do usuário
-            System.out.println("\nSaldo atualizado do usuário "+ gustavo.getNome() +" "+ gustavo.getSaldo());
+            System.out.println("\nSaldo atualizado do usuário " + gustavo.getNome() + ": " + gustavo.getSaldo());
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
