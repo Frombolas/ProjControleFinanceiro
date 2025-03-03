@@ -46,12 +46,11 @@ public class GastoDao {
     public boolean adicionarGasto(Gasto gasto) throws IOException, ClassNotFoundException {
         Set<Gasto> gastos = getGastos();
         if (gastos.add(gasto)) {
-            // atualizando o saldo do usuario
+            // Atualiza o saldo do usuário
             Usuario usuario = gasto.getUsuario();
             Saldo saldo = usuario.getSaldo();
-            saldo.removerValor(gasto.getValor());
+            saldo.removerValor(gasto.getValor()); // Subtrai o valor do gasto do saldo
 
-            // atualizando o arquivo
             atualizarArquivo(gastos);
             return true;
         }
@@ -69,7 +68,6 @@ public class GastoDao {
 
     public boolean atualizarGasto(Gasto gastoAtualizado) throws IOException, ClassNotFoundException {
         Set<Gasto> gastos = getGastos();
-
         for (Gasto gasto : gastos) {
             if (gasto.getId() == gastoAtualizado.getId()) {
                 // Verifica se o valor foi alterado

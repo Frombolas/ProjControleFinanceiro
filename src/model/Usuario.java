@@ -19,6 +19,14 @@ public class Usuario implements Serializable {
         this.saldo = saldo;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void adicionarGasto(Gasto gasto) {
         gastos.add(gasto);
     }
