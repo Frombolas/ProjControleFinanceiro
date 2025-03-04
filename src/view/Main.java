@@ -30,6 +30,11 @@ public class Main {
             gastoDao.adicionarGasto(gasto1);
             gastoDao.adicionarGasto(gasto2);
             gastoDao.adicionarGasto(gasto3);
+            saldoDao.atualizarSaldo(gustavo.getId(), gustavo.getSaldo());
+
+            // Atualiza o valor do gasto com id = 2 (de 50.0 para 48.2)
+            Gasto gastoAtualizado = new Gasto(2, 48.2f, null, null, null); // Apenas o valor é fornecido
+            gastoDao.atualizarGasto(gastoAtualizado);
 
             // Exibe todos os gastos
             Set<Gasto> gastos = gastoDao.getGastos();
