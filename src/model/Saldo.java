@@ -7,15 +7,14 @@ public class Saldo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public Saldo(double saldo) {
+        if (saldo < 0) {
+            throw new IllegalArgumentException("O saldo não pode ser negativo!");
+        }
         this.saldo = saldo;
     }
 
     public double getSaldo() {
         return saldo;
-    }
-
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
     }
 
     public boolean adicionarValor(double valor) {
@@ -38,4 +37,5 @@ public class Saldo implements Serializable {
     public String toString() {
         return String.format("Saldo: R$ %.2f", saldo); // Formata o saldo como moeda
     }
+
 }

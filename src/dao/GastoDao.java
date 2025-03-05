@@ -30,14 +30,16 @@ public class GastoDao {
         }
     }
 
-    public Set<Gasto> getGastos() throws IOException, ClassNotFoundException {
-        if (arquivo.length() == 0) {
+    public Set<Gasto> getGastos() {
+        if (!arquivo.exists() || arquivo.length() == 0) {
             return new HashSet<>();
         }
 
-        try (ObjectInputStream in = new ObjectInputStream(
-                new FileInputStream(arquivo))) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(arquivo))) {
             return (Set<Gasto>) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Erro ao ler os gastos do arquivo: " + e.getMessage());
+            return new HashSet<>();
         }
     }
 
@@ -45,11 +47,20 @@ public class GastoDao {
 
     public boolean adicionarGasto(Gasto gasto) throws IOException, ClassNotFoundException {
         Set<Gasto> gastos = getGastos();
+
         if (gastos.add(gasto)) {
             // Atualiza o saldo do usuário
             Usuario usuario = gasto.getUsuario();
-            Saldo saldo = usuario.getSaldo();
-            saldo.removerValor(gasto.getValor()); // Subtrai o valor do gasto do saldo
+            if (usuario != null) {
+                Saldo saldo = usuario.getSaldo();
+                if (saldo.removerValor(gasto.getValor())) { // Subtrai o valor apenas se possível
+                    SaldoDao saldoDao = new SaldoDao();
+                    saldoDao.atualizarSaldo(usuario.getId(), saldo); // Persiste a alteração no saldo
+                } else {
+                    System.err.println("Saldo insuficiente para registrar o gasto.");
+                    return false;
+                }
+            }
 
             atualizarArquivo(gastos);
             return true;
@@ -59,7 +70,16 @@ public class GastoDao {
 
     public boolean deletarGasto(Gasto gasto) throws IOException, ClassNotFoundException {
         Set<Gasto> gastos = getGastos();
+
         if (gastos.remove(gasto)) {
+            Usuario usuario = gasto.getUsuario();
+            if (usuario != null) {
+                Saldo saldo = usuario.getSaldo();
+                saldo.adicionarValor(gasto.getValor()); // Reembolsa o valor removido
+                SaldoDao saldoDao = new SaldoDao();
+                saldoDao.atualizarSaldo(usuario.getId(), saldo);
+            }
+
             atualizarArquivo(gastos);
             return true;
         }
@@ -68,38 +88,37 @@ public class GastoDao {
 
     public boolean atualizarGasto(Gasto gastoAtualizado) throws IOException, ClassNotFoundException {
         Set<Gasto> gastos = getGastos();
+
         for (Gasto gasto : gastos) {
             if (gasto.getId() == gastoAtualizado.getId()) {
-                // Verifica se o valor foi alterado
-                if (gastoAtualizado.getValor() != 0 && gastoAtualizado.getValor() != gasto.getValor()) {
-                    // Calcula a diferença entre o novo valor e o valor antigo
-                    float diferenca = gastoAtualizado.getValor() - gasto.getValor();
-
-                    // Atualiza o saldo do usuário
-                    Usuario usuario = gasto.getUsuario();
+                Usuario usuario = gasto.getUsuario();
+                if (usuario != null) {
                     Saldo saldo = usuario.getSaldo();
-                    saldo.removerValor(diferenca); // Subtrai a diferença do saldo
+                    double diferenca = gastoAtualizado.getValor() - gasto.getValor();
+
+                    if (diferenca > 0) {
+                        if (!saldo.removerValor(diferenca)) {
+                            System.err.println("Saldo insuficiente para aumentar o valor do gasto.");
+                            return false;
+                        }
+                    } else {
+                        saldo.adicionarValor(-diferenca); // Se o gasto for reduzido, devolve a diferença
+                    }
+
+                    SaldoDao saldoDao = new SaldoDao();
+                    saldoDao.atualizarSaldo(usuario.getId(), saldo);
                 }
 
-                // Atualiza os campos não nulos ou não zero
-                if (gastoAtualizado.getValor() != 0) {
-                    gasto.setValor(gastoAtualizado.getValor());
-                }
-                if (gastoAtualizado.getCategoria() != null) {
-                    gasto.setCategoria(gastoAtualizado.getCategoria());
-                }
-                if (gastoAtualizado.getData() != null) {
-                    gasto.setData(gastoAtualizado.getData());
-                }
-                if (gastoAtualizado.getUsuario() != null) {
-                    gasto.setUsuario(gastoAtualizado.getUsuario());
-                }
+                // Atualiza os atributos do gasto
+                gasto.setValor(gastoAtualizado.getValor());
+                gasto.setCategoria(gastoAtualizado.getCategoria() != null ? gastoAtualizado.getCategoria() : gasto.getCategoria());
+                gasto.setData(gastoAtualizado.getData() != null ? gastoAtualizado.getData() : gasto.getData());
+                gasto.setUsuario(gastoAtualizado.getUsuario() != null ? gastoAtualizado.getUsuario() : gasto.getUsuario());
 
-                // Salva as alterações no arquivo
                 atualizarArquivo(gastos);
                 return true;
             }
         }
-        return false; // Gasto não encontrado
+        return false;
     }
 }

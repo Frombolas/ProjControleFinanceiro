@@ -23,28 +23,34 @@ public class UsuarioDao {
 
     // Salva os usuários no arquivo
     private void atualizarArquivo(Map<Integer, Usuario> usuarios) throws IOException {
+        if (!arquivo.exists()) {
+            arquivo.createNewFile(); // Cria o arquivo somente se necessário
+        }
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo))) {
             out.writeObject(usuarios);
         }
     }
-
     // Recupera os usuários do arquivo
-    public Map<Integer, Usuario> getUsuarios() throws IOException, ClassNotFoundException {
-        if (arquivo.length() == 0) {
+    public Map<Integer, Usuario> getUsuarios() {
+        if (!arquivo.exists() || arquivo.length() == 0) {
             return new HashMap<>();
         }
 
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(arquivo))) {
             return (Map<Integer, Usuario>) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Erro ao ler os usuários do arquivo: " + e.getMessage());
+            return new HashMap<>();
         }
     }
 
     // Adiciona ou atualiza um usuário
     public boolean adicionarOuAtualizarUsuario(Usuario usuario) throws IOException, ClassNotFoundException {
         Map<Integer, Usuario> usuarios = getUsuarios();
-        usuarios.put(usuario.getId(), usuario); // Usa o ID do usuário como chave
+        boolean atualizado = usuarios.containsKey(usuario.getId()); // Verifica se o usuário já existia
+        usuarios.put(usuario.getId(), usuario);
         atualizarArquivo(usuarios);
-        return true;
+        return atualizado;
     }
 
     // Recupera um usuário pelo ID
@@ -56,10 +62,11 @@ public class UsuarioDao {
     // Remove um usuário pelo ID
     public boolean deletarUsuario(int usuarioId) throws IOException, ClassNotFoundException {
         Map<Integer, Usuario> usuarios = getUsuarios();
-        if (usuarios.remove(usuarioId) != null) { // Remove o usuário pelo ID
-            atualizarArquivo(usuarios);
-            return true;
+        if (!usuarios.containsKey(usuarioId)) {
+            return false; // O usuário não existe
         }
-        return false;
+        usuarios.remove(usuarioId);
+        atualizarArquivo(usuarios);
+        return true;
     }
 }
