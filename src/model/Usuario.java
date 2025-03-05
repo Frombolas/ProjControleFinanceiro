@@ -9,7 +9,7 @@ public class Usuario implements Serializable {
     private int id;
     private static final long serialVersionUID = 1L;
     private String nome;
-    private transient List<Gasto> gastos;
+    private List<Gasto> gastos;
     private Saldo saldo;
 
     public Usuario(int id, String nome, Saldo saldo) {
@@ -25,10 +25,6 @@ public class Usuario implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void adicionarGasto(Gasto gasto) {
-        gastos.add(gasto);
     }
 
     public String getNome() {
