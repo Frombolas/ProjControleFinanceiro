@@ -1,4 +1,4 @@
-package main;
+package view;
 
 import dao.GastoDao;
 import dao.SaldoDao;
