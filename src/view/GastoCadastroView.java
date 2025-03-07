@@ -29,7 +29,7 @@ public class GastoCadastroView extends JFrame {
     public GastoCadastroView() {
         gastoDao = new GastoDao();
         setTitle("Cadastro de Gastos");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setSize(450, 400);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
@@ -183,7 +183,4 @@ public class GastoCadastroView extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new GastoCadastroView().setVisible(true));
-    }
 }

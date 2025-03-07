@@ -9,12 +9,12 @@ public class TelaMenu extends JDialog {
     private JButton buttonOK;
     private JButton Usuario;
     private JButton Gastos;
-    private JButton visualizarGráficoButton;
+    private JButton visualizarGraficoButton;
     private JLabel simbolo;
 
     public TelaMenu() {
         setContentPane(contentPane);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         getRootPane().setDefaultButton(buttonOK);
         setTitle("Debt control");
 
@@ -35,25 +35,32 @@ public class TelaMenu extends JDialog {
         Gastos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                GastoCadastroView gastocadastro = new GastoCadastroView();
+                dispose();
+                gastocadastro.pack();
+                gastocadastro.setLocationRelativeTo(null);
+
+                gastocadastro.setVisible(true);
+                setVisible(false);
             }
         });
 
-        visualizarGráficoButton.addActionListener(new ActionListener() {
+        visualizarGraficoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GastoGraficoView gastografico = new GastoGraficoView();
+                dispose();
+                gastografico.pack();
+                gastografico.setLocationRelativeTo(null);
 
+                gastografico.setVisible(true);
+                setVisible(false);
             }
         });
     }
 
     public static void main(String[] args) {
         TelaMenu dialog = new TelaMenu();
-        //dialog.pack();
         dialog.setVisible(true);
     }
-
-    //private void createUIComponents() {
-    //    // TODO: place custom component creation code here
-    //}
 }
