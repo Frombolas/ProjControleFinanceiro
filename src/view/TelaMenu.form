@@ -111,6 +111,15 @@
               <text value="Visualizar gráfico"/>
             </properties>
           </component>
+          <component id="bf904" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="1" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <icon value="img/cash.png"/>
+              <text value=""/>
+            </properties>
+          </component>
         </children>
       </grid>
     </children>

@@ -14,11 +14,11 @@ public class TelaMenu extends JDialog {
 
     public TelaMenu() {
         setContentPane(contentPane);
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         getRootPane().setDefaultButton(buttonOK);
         setTitle("Debt control");
 
-        ImageIcon icon = new ImageIcon("img/money.png");
+        ImageIcon icon = new ImageIcon("src/img/money.png");
         setIconImage(icon.getImage());
 
         setSize(600,600);
