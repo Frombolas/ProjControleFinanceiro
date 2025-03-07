@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TelaMenu extends JDialog {
+public class TelaMenu extends JFrame {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton Usuario;
@@ -14,7 +14,7 @@ public class TelaMenu extends JDialog {
 
     public TelaMenu() {
         setContentPane(contentPane);
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getRootPane().setDefaultButton(buttonOK);
         setTitle("Debt control");
 
