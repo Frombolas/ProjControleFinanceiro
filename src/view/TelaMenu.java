@@ -14,7 +14,7 @@ public class TelaMenu extends JDialog {
 
     public TelaMenu() {
         setContentPane(contentPane);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         getRootPane().setDefaultButton(buttonOK);
         setTitle("Debt control");
 
