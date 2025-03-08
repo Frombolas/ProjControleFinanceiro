@@ -7,6 +7,7 @@ import model.Gasto;
 import model.Saldo;
 import model.Usuario;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -23,10 +24,6 @@ public class Main {
             UsuarioDao usuarioDao = new UsuarioDao();
             usuarioDao.adicionarOuAtualizarUsuario(usuario);
 
-            // Salvando saldo no DAO
-            SaldoDao saldoDao = new SaldoDao();
-            saldoDao.adicionarSaldo(usuario.getId(), saldo);
-
             // Criando um GastoDao
             GastoDao gastoDao = new GastoDao();
 
@@ -40,12 +37,28 @@ public class Main {
             gastoDao.adicionarGasto(gasto3);
 
             // Atualizar o saldo no DAO após os gastos
+            SaldoDao saldoDao = new SaldoDao();
             saldoDao.atualizarSaldo(usuario.getId(), usuario.getSaldo());
 
             // Exibir saldo atualizado
             Saldo saldoAtualizado = saldoDao.getSaldoPorUsuarioId(usuario.getId());
-            usuarioDao.adicionarOuAtualizarUsuario(new Usuario(1,"Gustavo", saldoAtualizado));
+            usuarioDao.adicionarOuAtualizarUsuario(new Usuario(1, "Gustavo", saldoAtualizado));
+
+            // Mostra o usuário no console após a atualização
             System.out.println(usuarioDao.getUsuarioPorId(1));
+
+            // Inicializando as telas de cadastro e visualização de usuários
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                // Tela de cadastro
+                UsuarioCadastroView cadastroView = new UsuarioCadastroView();
+                cadastroView.setVisible(true);
+            });
+
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                // Tela de visualização
+                UsuarioVisualizarView visualizarView = new UsuarioVisualizarView(usuarioDao);
+                visualizarView.setVisible(true);
+            });
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
