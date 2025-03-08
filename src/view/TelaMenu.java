@@ -25,7 +25,7 @@ public class TelaMenu extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(new BorderLayout());
 
-        ImageIcon icon = new ImageIcon("img/money.png");
+        ImageIcon icon = new ImageIcon("src/img/money.png");
         setIconImage(icon.getImage());
 
         // Adicionando o título centralizado

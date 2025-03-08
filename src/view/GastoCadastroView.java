@@ -27,7 +27,7 @@ public class GastoCadastroView extends JFrame {
         gastoDao = new GastoDao();
         usuarioDao = new UsuarioDao();
         setTitle("Cadastro de Gastos");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(450, 400);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
