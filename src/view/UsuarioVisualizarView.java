@@ -13,8 +13,8 @@ public class UsuarioVisualizarView extends JFrame {
     private DefaultTableModel modeloTabela;
     private UsuarioDao usuarioDao;
 
-    public UsuarioVisualizarView(UsuarioDao usuarioDao) {
-        this.usuarioDao = new UsuarioDao();
+    public UsuarioVisualizarView() {
+        usuarioDao = new UsuarioDao();
         setTitle("Visualização de Usuários");
         setSize(600, 400);
         setLocationRelativeTo(null);

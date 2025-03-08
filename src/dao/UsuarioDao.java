@@ -9,7 +9,7 @@ public class UsuarioDao {
     private File arquivo;
 
     public UsuarioDao() {
-        arquivo = new File("Usuarios.dat"); // Corrigi a extensão do arquivo
+        arquivo = new File("Usuarios"); // Corrigi a extensão do arquivo
         if (!arquivo.exists()) {
             try {
                 arquivo.createNewFile();
