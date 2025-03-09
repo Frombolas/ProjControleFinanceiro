@@ -6,8 +6,6 @@ import java.awt.event.ActionListener;
 
 public class TelaMenu extends JDialog {
     private JPanel contentPane;
-    private JButton buttonOK;
-    private JButton Usuario;
     private JButton Gastos;
     private JButton visualizarGraficoButton;
     private JButton usuariosButton;
@@ -15,35 +13,33 @@ public class TelaMenu extends JDialog {
 
     public TelaMenu() {
         setContentPane(contentPane);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        getRootPane().setDefaultButton(buttonOK);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setTitle("Debt control");
 
         ImageIcon icon = new ImageIcon("src/img/money.png");
         setIconImage(icon.getImage());
 
-        setSize(600,600);
+        setSize(600,400);
         setResizable(false);
         setLocationRelativeTo(null);
-
-
-        Usuario.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
 
         Gastos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GastoCadastroView gastocadastro = new GastoCadastroView();
+                GastoCadastroView gastoCadastro = new GastoCadastroView();
                 dispose();
-                gastocadastro.pack();
-                gastocadastro.setLocationRelativeTo(null);
+                gastoCadastro.setLocationRelativeTo(null); //Centraliza a janela na tela.
 
-                gastocadastro.setVisible(true);
-                setVisible(false);
+                gastoCadastro.setVisible(true);//Exibe a nova tela
+                setVisible(false); //Para a janela atual fechar
+
+                // Adiciona um listener para quando a nova janela for fechada, o menu reaparecer
+                gastoCadastro.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                        setVisible(true); // Reexibe o menu
+                    }
+                });
             }
         });
 
@@ -51,12 +47,17 @@ public class TelaMenu extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GastoGraficoView gastografico = new GastoGraficoView();
-                dispose();
+
                 gastografico.pack();
                 gastografico.setLocationRelativeTo(null);
-
+                dispose();
                 gastografico.setVisible(true);
-                setVisible(false);
+                gastografico.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                        setVisible(true);
+                    }
+                });
             }
         });
 
@@ -65,23 +66,36 @@ public class TelaMenu extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 UsuarioCadastroView usuarioCadastro = new UsuarioCadastroView();
                 dispose();
-                usuarioCadastro.pack();
+
                 usuarioCadastro.setLocationRelativeTo(null);
 
                 usuarioCadastro.setVisible(true);
-                setVisible(false);
+
+                usuarioCadastro.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                        setVisible(true);
+                    }
+                });
             }
         });
         visualizarUsuariosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UsuarioVisualizarView usuarioVisualizar = new UsuarioVisualizarView();
+                setVisible(false);
                 dispose();
+                UsuarioVisualizarView usuarioVisualizar = new UsuarioVisualizarView();
+
                 usuarioVisualizar.pack();
                 usuarioVisualizar.setLocationRelativeTo(null);
-
                 usuarioVisualizar.setVisible(true);
-                setVisible(false);
+
+                usuarioVisualizar.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                        setVisible(true);
+                    }
+                });
             }
         });
     }
@@ -90,5 +104,5 @@ public class TelaMenu extends JDialog {
         TelaMenu dialog = new TelaMenu();
         dialog.setVisible(true);
     }
-    
+
 }
