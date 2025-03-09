@@ -17,6 +17,10 @@ public class UsuarioVisualizarView extends JFrame {
         usuarioDao = new UsuarioDao();
         setTitle("Visualização de Usuários");
         setSize(600, 400);
+
+        ImageIcon icon = new ImageIcon("src/img/money.png");
+        setIconImage(icon.getImage());
+
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
         getContentPane().setBackground(new Color(245, 245, 245));

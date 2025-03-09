@@ -22,6 +22,10 @@ public class UsuarioCadastroView extends JFrame {
 
         setTitle("Cadastro de Usuário");
         setSize(400, 300);
+
+        ImageIcon icon = new ImageIcon("src/img/money.png");
+        setIconImage(icon.getImage());
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new FlowLayout());

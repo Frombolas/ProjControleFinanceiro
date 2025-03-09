@@ -17,6 +17,10 @@ public class GastoTabelaView extends JFrame {
     public GastoTabelaView() {
         gastoDao = new GastoDao();
         setTitle("Visualização de Gastos");
+
+        ImageIcon icon = new ImageIcon("src/img/money.png");
+        setIconImage(icon.getImage());
+
         setSize(600, 400);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));

@@ -23,6 +23,10 @@ public class GastoGraficoView extends JFrame {
         gastoDao = new GastoDao();
         setTitle("Gráfico de Gastos por Categoria");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        ImageIcon icon = new ImageIcon("src/img/money.png");
+        setIconImage(icon.getImage());
+
         setSize(800, 600);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10,10));

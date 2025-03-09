@@ -27,6 +27,10 @@ public class GastoCadastroView extends JFrame {
         gastoDao = new GastoDao();
         usuarioDao = new UsuarioDao();
         setTitle("Cadastro de Gastos");
+
+        ImageIcon icon = new ImageIcon("src/img/money.png");
+        setIconImage(icon.getImage());
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(450, 400);
         setLocationRelativeTo(null);

@@ -19,7 +19,7 @@ public class TelaMenu extends JDialog {
         ImageIcon icon = new ImageIcon("src/img/money.png");
         setIconImage(icon.getImage());
 
-        setSize(600,400);
+        setSize(700,400);
         setResizable(false);
         setLocationRelativeTo(null);
 
